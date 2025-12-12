@@ -1,11 +1,13 @@
-import Link from 'next/link';
+import Link from "next/link";
+import db from "@/assets/dp.jpeg";
+import Image from "next/image";
 
 const DEFAULT_PARTICIPANTS = [
-  { id: '1', name: 'swalih' },
-  { id: '2', name: 'ijas' },
-  { id: '3', name: 'ameen' },
-  { id: '4', name: 'ameer' },
-  { id: '5', name: 'arshad ali' },
+  { id: "1", name: "swalih" },
+  { id: "2", name: "ijas" },
+  { id: "3", name: "ameen" },
+  { id: "4", name: "ameer" },
+  { id: "5", name: "arshad ali" },
 ];
 
 export default function Home() {
@@ -13,24 +15,32 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-blue-600 text-white px-4 py-6 md:px-6 md:py-8 shadow-lg">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-2">Trip Splitter</h1>
-          <p className="text-blue-100 text-base md:text-lg">
-            Split expenses and settle up with your group
-          </p>
+        <div className=" flex flex-col items-center">
+          <div className=" w-24 h-24 rounded-b-full">
+            <Image src={db} alt="" className="w-full h-full object-cover rounded-full" width={100} height={100}/>
+          </div>
+          <div className="max-w-7xl mx-auto text-center">
+            <h1 className="text-2xl md:text-5xl font-bold mb-2">
+              Panchayath Trip Splitter
+            </h1>
+            <p className="text-blue-100 text-base md:text-lg">
+              Split expenses and settle up with your group
+            </p>
+          </div>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8 md:px-6 md:py-12">
         <div className="bg-white rounded-lg shadow-lg p-6 md:p-8 border-t-4 border-blue-600">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+          {/* <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
             Welcome!
           </h2>
           <p className="text-gray-600 text-base md:text-lg mb-8">
-            Trip Splitter helps you track shared expenses and calculate how much each person owes.
-            Perfect for trips with friends, roommates, or any group that shares costs.
-          </p>
+            Trip Splitter helps you track shared expenses and calculate how much
+            each person owes. Perfect for trips with friends, roommates, or any
+            group that shares costs.
+          </p> */}
 
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             <div className="space-y-4">
@@ -60,10 +70,12 @@ export default function Home() {
             </div>
 
             <div className="bg-blue-50 rounded-lg p-6 md:p-8 border border-blue-200">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Get Started</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">
+                Get Started
+              </h3>
               <p className="text-gray-700 mb-6">
-                Create your first trip now. You can add expenses, track who paid what, and see
-                exactly who owes whom.
+                Create your first trip now. You can add expenses, track who paid
+                what, and see exactly who owes whom.
               </p>
               <Link
                 href="/trips/new"
@@ -76,9 +88,12 @@ export default function Home() {
           </div>
 
           <div className="bg-gray-50 rounded-lg p-4 md:p-6 border border-gray-200">
-            <h3 className="font-semibold text-gray-900 mb-3">Pre-filled Participants</h3>
+            <h3 className="font-semibold text-gray-900 mb-3">
+              Pre-filled Participants
+            </h3>
             <p className="text-sm text-gray-600 mb-4">
-              New trips come with these participants pre-filled (you can modify them):
+              New trips come with these participants pre-filled (you can modify
+              them):
             </p>
             <div className="flex flex-wrap gap-2">
               {DEFAULT_PARTICIPANTS.map((p) => (
@@ -96,9 +111,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="bg-gray-800 text-gray-300 text-center py-6 mt-12">
-        <p className="text-sm">
-          Trip Splitter © 2024 — Split expenses, settle up fairly
-        </p>
+        <p className="text-sm">Developed By Codes swalih</p>
       </footer>
     </div>
   );

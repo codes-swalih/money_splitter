@@ -43,13 +43,13 @@ export default function TripHeader({
               onClick={onShare}
               className="flex items-center gap-2 bg-white text-blue-600 px-3 md:px-4 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors text-sm md:text-base"
             >
-              <span className="hidden sm:inline">Share</span>
+              <span className=" sm:inline">Share</span>
             </button>
             <button
               onClick={onExport}
               className="flex items-center gap-2 bg-blue-500 text-white px-3 md:px-4 py-2 rounded-lg font-medium hover:bg-blue-800 transition-colors text-sm md:text-base"
             >
-              <span className="hidden sm:inline">Export</span>
+              <span className=" sm:inline">Export</span>
             </button>
           </div>
         </div>

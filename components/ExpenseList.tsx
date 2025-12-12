@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
 interface Expense {
   _id: string;
@@ -38,16 +38,21 @@ export default function ExpenseList({
   const getParticipantName = (id: string) => {
     return participants.find((p) => p.id === id)?.name || id;
   };
-
+  
   const getCategoryColor = (category: string) => {
     const colors: Record<string, string> = {
-      Food: 'bg-orange-100 text-orange-800',
-      Accommodation: 'bg-purple-100 text-purple-800',
-      Transport: 'bg-blue-100 text-blue-800',
-      Activities: 'bg-pink-100 text-pink-800',
-      Shopping: 'bg-yellow-100 text-yellow-800',
-      Other: 'bg-gray-100 text-gray-800',
+      "Car rental": "bg-indigo-100 text-indigo-800",
+      Petrol: "bg-lime-100 text-lime-800",
+      Food: "bg-orange-100 text-orange-800",
+      Cigrettes: "bg-red-100 text-red-800",
+      Accommodation: "bg-purple-100 text-purple-800",
+      Activities: "bg-pink-100 text-pink-800",
+      Shopping: "bg-yellow-100 text-yellow-800",
+      Drinks: "bg-cyan-100 text-cyan-800",
+      snacks: "bg-amber-100 text-amber-800",
+      Other: "bg-gray-100 text-gray-800",
     };
+
     return colors[category] || colors.Other;
   };
 
@@ -75,8 +80,12 @@ export default function ExpenseList({
           {expenses.map((expense) => {
             const total =
               expense.amount +
-              (expense.taxPercent ? (expense.amount * expense.taxPercent) / 100 : 0) +
-              (expense.tipPercent ? (expense.amount * expense.tipPercent) / 100 : 0);
+              (expense.taxPercent
+                ? (expense.amount * expense.taxPercent) / 100
+                : 0) +
+              (expense.tipPercent
+                ? (expense.amount * expense.tipPercent) / 100
+                : 0);
 
             return (
               <div
@@ -97,7 +106,7 @@ export default function ExpenseList({
                     </span>
                   </div>
                   <p className="font-semibold text-gray-900 text-sm md:text-base truncate">
-                    {expense.description || 'No description'}
+                    {expense.description || "No description"}
                   </p>
                   <p className="text-xs md:text-sm text-gray-600">
                     Paid by {getParticipantName(expense.payerId)}
@@ -112,7 +121,7 @@ export default function ExpenseList({
                     {(expense.taxPercent || expense.tipPercent) && (
                       <div className="text-xs text-gray-600">
                         {expense.taxPercent && `+${expense.taxPercent}% tax`}
-                        {expense.taxPercent && expense.tipPercent && ', '}
+                        {expense.taxPercent && expense.tipPercent && ", "}
                         {expense.tipPercent && `+${expense.tipPercent}% tip`}
                       </div>
                     )}
