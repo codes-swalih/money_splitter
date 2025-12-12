@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 interface Participant {
   id: string;
@@ -17,12 +17,16 @@ interface ExpenseModalProps {
 }
 
 const CATEGORIES = [
-  'Food',
-  'Accommodation',
-  'Transport',
-  'Activities',
-  'Shopping',
-  'Other',
+  "Car rental",
+  "Petrol",
+  "Food",
+  "Cigrettes",
+  "Accommodation",
+  "Activities",
+  "Shopping",
+  "Drinks",
+  "snacks",
+  "Other",
 ];
 
 export default function ExpenseModal({
@@ -33,16 +37,18 @@ export default function ExpenseModal({
   editingExpense,
   currency,
 }: ExpenseModalProps) {
-  const [amount, setAmount] = useState('');
-  const [payerId, setPayerId] = useState('');
-  const [category, setCategory] = useState('Food');
-  const [description, setDescription] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-  const [taxPercent, setTaxPercent] = useState('');
-  const [tipPercent, setTipPercent] = useState('');
-  const [splitType, setSplitType] = useState('EQUAL');
+  const [amount, setAmount] = useState("");
+  const [payerId, setPayerId] = useState("");
+  const [category, setCategory] = useState("Food");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
+  const [taxPercent, setTaxPercent] = useState("");
+  const [tipPercent, setTipPercent] = useState("");
+  const [splitType, setSplitType] = useState("EQUAL");
   const [selectedForSplit, setSelectedForSplit] = useState<string[]>([]);
-  const [customAmounts, setCustomAmounts] = useState<Record<string, string>>({});
+  const [customAmounts, setCustomAmounts] = useState<Record<string, string>>(
+    {}
+  );
   const [percentages, setPercentages] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -51,16 +57,16 @@ export default function ExpenseModal({
       setPayerId(editingExpense.payerId);
       setCategory(editingExpense.category);
       setDescription(editingExpense.description);
-      setDate(new Date(editingExpense.date).toISOString().split('T')[0]);
-      setTaxPercent(editingExpense.taxPercent || '');
-      setTipPercent(editingExpense.tipPercent || '');
+      setDate(new Date(editingExpense.date).toISOString().split("T")[0]);
+      setTaxPercent(editingExpense.taxPercent || "");
+      setTipPercent(editingExpense.tipPercent || "");
       setSplitType(editingExpense.splitType);
 
-      if (editingExpense.splitType === 'SELECTED_EQUAL') {
+      if (editingExpense.splitType === "SELECTED_EQUAL") {
         setSelectedForSplit(Object.keys(editingExpense.splitDetails || {}));
-      } else if (editingExpense.splitType === 'CUSTOM_AMOUNTS') {
+      } else if (editingExpense.splitType === "CUSTOM_AMOUNTS") {
         setCustomAmounts(editingExpense.splitDetails || {});
-      } else if (editingExpense.splitType === 'PERCENTAGES') {
+      } else if (editingExpense.splitType === "PERCENTAGES") {
         setPercentages(editingExpense.splitDetails || {});
       }
     } else {
@@ -69,14 +75,14 @@ export default function ExpenseModal({
   }, [editingExpense, isOpen]);
 
   const resetForm = () => {
-    setAmount('');
-    setPayerId(participants[0]?.id || '');
-    setCategory('Food');
-    setDescription('');
-    setDate(new Date().toISOString().split('T')[0]);
-    setTaxPercent('');
-    setTipPercent('');
-    setSplitType('EQUAL');
+    setAmount("");
+    setPayerId(participants[0]?.id || "");
+    setCategory("Food");
+    setDescription("");
+    setDate(new Date().toISOString().split("T")[0]);
+    setTaxPercent("");
+    setTipPercent("");
+    setSplitType("EQUAL");
     setSelectedForSplit([]);
     setCustomAmounts({});
     setPercentages({});
@@ -97,17 +103,14 @@ export default function ExpenseModal({
     if (taxPercent) expenseData.taxPercent = parseFloat(taxPercent);
     if (tipPercent) expenseData.tipPercent = parseFloat(tipPercent);
 
-    if (splitType === 'SELECTED_EQUAL') {
-      expenseData.splitDetails = selectedForSplit.reduce(
-        (acc, id) => {
-          acc[id] = 0; // will be calculated server-side
-          return acc;
-        },
-        {} as Record<string, number>
-      );
-    } else if (splitType === 'CUSTOM_AMOUNTS') {
+    if (splitType === "SELECTED_EQUAL") {
+      expenseData.splitDetails = selectedForSplit.reduce((acc, id) => {
+        acc[id] = 0; // will be calculated server-side
+        return acc;
+      }, {} as Record<string, number>);
+    } else if (splitType === "CUSTOM_AMOUNTS") {
       expenseData.splitDetails = customAmounts;
-    } else if (splitType === 'PERCENTAGES') {
+    } else if (splitType === "PERCENTAGES") {
       expenseData.splitDetails = percentages;
     }
 
@@ -123,7 +126,7 @@ export default function ExpenseModal({
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-4 md:p-6 border-b border-gray-200 sticky top-0 bg-white">
           <h2 className="text-xl md:text-2xl font-bold text-gray-900">
-            {editingExpense ? 'Edit Expense' : 'Add Expense'}
+            {editingExpense ? "Edit Expense" : "Add Expense"}
           </h2>
           <button
             onClick={onClose}
@@ -134,7 +137,10 @@ export default function ExpenseModal({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-4 md:p-6 space-y-4 md:space-y-6 text-black">
+        <form
+          onSubmit={handleSubmit}
+          className="p-4 md:p-6 space-y-4 md:space-y-6 text-black"
+        >
           {/* Amount & Payer */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -256,7 +262,7 @@ export default function ExpenseModal({
               Split Type
             </label>
             <div className="space-y-2">
-              {['EQUAL', 'SELECTED_EQUAL', 'CUSTOM_AMOUNTS', 'PERCENTAGES'].map(
+              {["EQUAL", "SELECTED_EQUAL", "CUSTOM_AMOUNTS", "PERCENTAGES"].map(
                 (type) => (
                   <label
                     key={type}
@@ -271,13 +277,13 @@ export default function ExpenseModal({
                       className="w-4 h-4"
                     />
                     <span className="text-sm text-gray-700">
-                      {type === 'EQUAL'
-                        ? 'Equal among all'
-                        : type === 'SELECTED_EQUAL'
-                        ? 'Equal among selected'
-                        : type === 'CUSTOM_AMOUNTS'
-                        ? 'Custom amounts'
-                        : 'Percentages'}
+                      {type === "EQUAL"
+                        ? "Equal among all"
+                        : type === "SELECTED_EQUAL"
+                        ? "Equal among selected"
+                        : type === "CUSTOM_AMOUNTS"
+                        ? "Custom amounts"
+                        : "Percentages"}
                     </span>
                   </label>
                 )
@@ -286,21 +292,21 @@ export default function ExpenseModal({
           </div>
 
           {/* Split Details */}
-          {(splitType === 'SELECTED_EQUAL' ||
-            splitType === 'CUSTOM_AMOUNTS' ||
-            splitType === 'PERCENTAGES') && (
+          {(splitType === "SELECTED_EQUAL" ||
+            splitType === "CUSTOM_AMOUNTS" ||
+            splitType === "PERCENTAGES") && (
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-3">
-                {splitType === 'CUSTOM_AMOUNTS'
-                  ? 'Custom Amounts'
-                  : splitType === 'PERCENTAGES'
-                  ? 'Percentages (%)'
-                  : 'Selected Participants'}
+                {splitType === "CUSTOM_AMOUNTS"
+                  ? "Custom Amounts"
+                  : splitType === "PERCENTAGES"
+                  ? "Percentages (%)"
+                  : "Selected Participants"}
               </label>
               <div className="space-y-2">
                 {participants.map((p) => (
                   <div key={p.id} className="flex items-center gap-2">
-                    {splitType === 'SELECTED_EQUAL' ? (
+                    {splitType === "SELECTED_EQUAL" ? (
                       <>
                         <input
                           type="checkbox"
@@ -316,7 +322,9 @@ export default function ExpenseModal({
                           }}
                           className="w-4 h-4"
                         />
-                        <label className="text-sm text-gray-700">{p.name}</label>
+                        <label className="text-sm text-gray-700">
+                          {p.name}
+                        </label>
                       </>
                     ) : (
                       <>
@@ -327,12 +335,12 @@ export default function ExpenseModal({
                           type="number"
                           step="0.01"
                           value={
-                            splitType === 'CUSTOM_AMOUNTS'
-                              ? customAmounts[p.id] || ''
-                              : percentages[p.id] || ''
+                            splitType === "CUSTOM_AMOUNTS"
+                              ? customAmounts[p.id] || ""
+                              : percentages[p.id] || ""
                           }
                           onChange={(e) => {
-                            if (splitType === 'CUSTOM_AMOUNTS') {
+                            if (splitType === "CUSTOM_AMOUNTS") {
                               setCustomAmounts({
                                 ...customAmounts,
                                 [p.id]: e.target.value,
@@ -361,7 +369,7 @@ export default function ExpenseModal({
               type="submit"
               className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
             >
-              {editingExpense ? 'Update Expense' : 'Add Expense'}
+              {editingExpense ? "Update Expense" : "Add Expense"}
             </button>
             <button
               type="button"
