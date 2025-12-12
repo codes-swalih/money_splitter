@@ -6,7 +6,7 @@ import { calculateLedger, generateSettlement } from '@/lib/utils/calculations';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await dbConnect();

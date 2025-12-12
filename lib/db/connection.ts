@@ -1,15 +1,22 @@
 import mongoose from 'mongoose';
 
+declare global {
+  var mongooseCache: {
+    conn: typeof mongoose | null;
+    promise: Promise<typeof mongoose> | null;
+  };
+}
+
 const MONGO_URI = process.env.MONGO_URI || '';
 
 if (!MONGO_URI) {
   throw new Error('Please define the MONGO_URI environment variable');
 }
 
-let cached = global.mongoose;
+let cached = global.mongooseCache;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = global.mongooseCache = { conn: null, promise: null };
 }
 
 export async function dbConnect() {
@@ -37,11 +44,4 @@ export async function dbConnect() {
   }
 
   return cached.conn;
-}
-
-declare global {
-  var mongoose: {
-    conn: typeof mongoose | null;
-    promise: Promise<typeof mongoose> | null;
-  };
 }

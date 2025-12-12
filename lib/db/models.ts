@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Types } from 'mongoose';
 
 export interface Participant {
   id: string;
@@ -8,7 +8,7 @@ export interface Participant {
 }
 
 export interface TripDocument extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   title: string;
   startDate: Date;
   endDate: Date;
@@ -45,7 +45,7 @@ export interface SplitDetail {
 }
 
 export interface ExpenseDocument extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   tripId: string;
   amount: number;
   currency: string;

@@ -4,13 +4,20 @@ import React from 'react';
 
 interface Expense {
   _id: string;
-  payerId: string;
-  category: string;
+  tripId: string;
   amount: number;
-  date: string | Date;
+  currency: string;
+  payerId: string;
+  date: string;
+  category: string;
   description: string;
+  receiptUrl?: string;
+  tax?: number;
   taxPercent?: number;
+  tip?: number;
   tipPercent?: number;
+  splitType: string;
+  splitDetails: Record<string, number>;
 }
 
 interface ExpenseListProps {

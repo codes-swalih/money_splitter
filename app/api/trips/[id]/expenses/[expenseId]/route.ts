@@ -4,7 +4,7 @@ import { Expense } from '@/lib/db/models';
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string; expenseId: string } }
+  { params }: { params: Promise<{ id: string; expenseId: string }> }
 ) {
   try {
     await dbConnect();
@@ -32,7 +32,7 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string; expenseId: string } }
+  { params }: { params: Promise<{ id: string; expenseId: string }> }
 ) {
   try {
     await dbConnect();
