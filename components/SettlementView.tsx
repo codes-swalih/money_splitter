@@ -61,8 +61,8 @@ export default function SettlementView({ settlements }: SettlementViewProps) {
                   ₹{settlement.amount.toFixed(2)}
                 </div>
               </div>
-              <div className="shrink-0 w-9 h-9 rounded-full bg-green-100 flex items-center justify-center font-semibold text-green-700 text-sm">
-                {settlement.toName.charAt(0).toUpperCase()}
+              <div className="shrink-0 px-2 py-1 rounded-full bg-green-900 flex items-center justify-center font- text-white text-xs">
+                {settlement.toName}
               </div>
             </div>
           </div>

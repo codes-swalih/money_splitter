@@ -21,15 +21,15 @@ export default function Home() {
     let mounted = true;
     const fetchTrips = async () => {
       try {
-        const res = await fetch('/api/trips?ownerId=user-1');
+        const res = await fetch("/api/trips?ownerId=user-1");
         if (res.ok) {
           const data = await res.json();
           if (mounted) setTrips(data.trips || []);
         } else {
-          console.warn('Failed to load trips');
+          console.warn("Failed to load trips");
         }
       } catch (e) {
-        console.error('Error fetching trips:', e);
+        console.error("Error fetching trips:", e);
       } finally {
         if (mounted) setLoadingTrips(false);
       }
@@ -142,23 +142,36 @@ export default function Home() {
               ))}
             </div>
           </div>
-          
+
           <div className="mt-6 bg-white rounded-lg shadow-sm p-4 md:p-6 border border-gray-200">
             <h3 className="font-semibold text-gray-900 mb-3">Your Trips</h3>
             {loadingTrips ? (
               <p className="text-sm text-gray-600">Loading your trips…</p>
             ) : trips.length === 0 ? (
-              <p className="text-sm text-gray-600">You have no trips yet. Create one to get started.</p>
+              <p className="text-sm text-gray-600">
+                You have no trips yet. Create one to get started.
+              </p>
             ) : (
               <div className="space-y-3">
                 {trips.map((t) => (
-                  <Link key={t._id} href={`/trips/${t._id}`} className="block p-3 rounded-lg hover:bg-gray-50 border border-gray-100">
+                  <Link
+                    key={t._id}
+                    href={`/trips/${t._id}`}
+                    className="block p-3 rounded-lg hover:bg-gray-50 border border-gray-100"
+                  >
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="font-semibold text-gray-900">{t.title}</div>
-                        <div className="text-xs text-gray-500">{new Date(t.startDate).toLocaleDateString()} – {new Date(t.endDate).toLocaleDateString()}</div>
+                        <div className="font-semibold text-gray-900">
+                          {t.title}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {new Date(t.startDate).toLocaleDateString()} –{" "}
+                          {new Date(t.endDate).toLocaleDateString()}
+                        </div>
                       </div>
-                      <div className="text-sm text-gray-500">{t.participants?.length || 0} people</div>
+                      <div className="text-sm text-gray-500">
+                        {t.participants?.length || 0} people
+                      </div>
                     </div>
                   </Link>
                 ))}

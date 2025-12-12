@@ -57,19 +57,19 @@ export async function GET(request: NextRequest) {
 
     // Allow optional ownerId query param, default to 'user-1' for local/demo use
     const url = new URL(request.url);
-    const ownerId = url.searchParams.get('ownerId') || 'user-1';
+    const ownerId = url.searchParams.get("ownerId") || "user-1";
 
     const trips = await Trip.find({ ownerId }).sort({ createdAt: -1 }).lean();
 
     return NextResponse.json({ trips }, { status: 200 });
   } catch (error) {
-    console.error('GET /api/trips error:', error);
-    const debug = process.env.DEBUG_API === 'true';
+    console.error("GET /api/trips error:", error);
+    const debug = process.env.DEBUG_API === "true";
     const message = debug
       ? error instanceof Error
         ? error.message
         : String(error)
-      : 'Failed to fetch trips';
+      : "Failed to fetch trips";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
