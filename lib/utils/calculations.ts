@@ -137,7 +137,7 @@ function validateCustomAmounts(
  */
 export function calculateExpenseSplit(
   grossAmount: number,
-  splitType: 'EQUAL' | 'SELECTED_EQUAL' | 'CUSTOM_AMOUNTS' | 'PERCENTAGES',
+  splitType: "EQUAL" | "SELECTED_EQUAL" | "CUSTOM_AMOUNTS" | "PERCENTAGES",
   participants: string[],
   splitDetails?: SplitDetail,
   taxPercent?: number,
@@ -146,7 +146,7 @@ export function calculateExpenseSplit(
   tipAbsolute?: number
 ): ExpenseCalculation {
   if (grossAmount <= 0) {
-    throw new Error('Expense amount must be greater than 0');
+    throw new Error("Expense amount must be greater than 0");
   }
 
   const { taxAmount, tipAmount } = calculateTaxTip(
@@ -161,27 +161,30 @@ export function calculateExpenseSplit(
 
   let shares: SplitDetail = {};
 
-  if (splitType === 'EQUAL') {
+  if (splitType === "EQUAL") {
     shares = calculateEqualSplit(totalExpense, participants);
-  } else if (splitType === 'SELECTED_EQUAL') {
+  } else if (splitType === "SELECTED_EQUAL") {
     const selectedParticipants = splitDetails
       ? Object.keys(splitDetails).sort()
       : participants;
     shares = calculateEqualSplit(totalExpense, selectedParticipants);
-  } else if (splitType === 'CUSTOM_AMOUNTS') {
+  } else if (splitType === "CUSTOM_AMOUNTS") {
     if (!splitDetails) {
-      throw new Error('Custom amounts required for CUSTOM_AMOUNTS split');
+      throw new Error("Custom amounts required for CUSTOM_AMOUNTS split");
     }
     const validation = validateCustomAmounts(splitDetails, totalExpense);
     if (!validation.valid) {
       throw new Error(validation.error);
     }
     shares = splitDetails;
-  } else if (splitType === 'PERCENTAGES') {
+  } else if (splitType === "PERCENTAGES") {
     if (!splitDetails) {
-      throw new Error('Percentages required for PERCENTAGES split');
+      throw new Error("Percentages required for PERCENTAGES split");
     }
-    const percentageSum = Object.values(splitDetails).reduce((a, b) => a + b, 0);
+    const percentageSum = Object.values(splitDetails).reduce(
+      (a, b) => a + b,
+      0
+    );
     if (Math.abs(percentageSum - 100) > 0.01) {
       throw new Error(`Percentages must sum to 100 (got ${percentageSum})`);
     }
@@ -289,9 +292,7 @@ export function calculateLedger(
 /**
  * Generate minimal settlement transactions
  */
-export function generateSettlement(
-  ledger: ParticipantLedger[]
-): Settlement[] {
+export function generateSettlement(ledger: ParticipantLedger[]): Settlement[] {
   const settlements: Settlement[] = [];
 
   // Create lists of debtors and creditors

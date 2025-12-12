@@ -9,6 +9,7 @@ Your Trip Splitter app is now **fully functional** with all MVP features impleme
 ## 📦 What's Been Built
 
 ### 🏗️ Architecture
+
 - **Frontend**: Next.js 16 with React 19 & TypeScript
 - **Backend**: Next.js API routes with Node.js
 - **Database**: MongoDB with Mongoose ODM
@@ -18,40 +19,47 @@ Your Trip Splitter app is now **fully functional** with all MVP features impleme
 ### 🎯 Core Features (All Implemented)
 
 ✅ **Trip Management**
+
 - Create trips with date ranges and currency
 - Multi-participant support (default 5 pre-filled)
 - Full trip CRUD operations
 
 ✅ **Expense Tracking**
+
 - Add/edit/delete expenses
 - 6 categories (Food, Accommodation, Transport, Activities, Shopping, Other)
 - Tax & tip support (percentage or absolute)
 - Receipt URL storage
 
 ✅ **Smart Splitting**
+
 - Equal split among all
 - Equal split among selected
 - Custom amounts per person
 - Percentage-based splits
 
 ✅ **Financial Calculations**
+
 - Precise 2-decimal rounding
 - Deterministic remainder distribution
 - Per-person ledger (paid, owed, balance)
 - Balance verification (sums to ±0.01)
 
 ✅ **Settlement Optimization**
+
 - Minimal transaction algorithm
 - Greedy creditor-debtor matching
 - Clear "who pays whom" suggestions
 - Transaction count and total display
 
 ✅ **Data Export**
+
 - CSV export with full details
 - Includes expenses, ledger, and settlements
 - Ready for Excel/Sheets import
 
 ✅ **Mobile Responsive UI**
+
 - Works perfectly on mobile (320px+)
 - Tablet-optimized layouts
 - Desktop full-featured experience
@@ -107,11 +115,13 @@ panchayath_trip/
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
+
 - Node.js 18+ (check: `node --version`)
 - MongoDB URI (free tier available at mongodb.com/cloud/atlas)
 - Code editor (VS Code, WebStorm, etc.)
 
 ### 2. Setup (1 minute)
+
 ```bash
 cd /Users/muhammedswalih/projects/panchayath_trip
 
@@ -120,12 +130,15 @@ cd /Users/muhammedswalih/projects/panchayath_trip
 ```
 
 ### 3. Configure
+
 Create/update `.env`:
+
 ```env
 MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/?appName=tripmoney
 ```
 
 ### 4. Run
+
 ```bash
 npm run dev
 ```
@@ -133,6 +146,7 @@ npm run dev
 Open: **http://localhost:3001**
 
 ### 5. Start Using
+
 1. Click "Create New Trip"
 2. Fill in trip details
 3. Add expenses
@@ -144,18 +158,21 @@ Open: **http://localhost:3001**
 ## 💻 Key Code Files
 
 ### Calculations (`lib/utils/calculations.ts`)
+
 - `calculateExpenseSplit()` - Handles all split types
 - `calculateLedger()` - Per-person accounting
 - `generateSettlement()` - Minimal settlement algorithm
 - `roundToTwoDec()` - Precise rounding utility
 
 ### Models (`lib/db/models.ts`)
+
 ```typescript
 - Trip: title, dates, currency, participants
 - Expense: amount, payer, category, splits, tax/tip
 ```
 
 ### API Routes
+
 ```
 POST   /api/trips                      Create trip
 GET    /api/trips/:id                  Get trip with calcs
@@ -168,6 +185,7 @@ GET    /api/trips/:id/export           Export CSV
 ```
 
 ### Components
+
 - **TripHeader** - Title, date, currency, actions
 - **ParticipantList** - Members with balances
 - **DashboardStats** - Summary cards
@@ -180,6 +198,7 @@ GET    /api/trips/:id/export           Export CSV
 ## 📱 Features Highlight
 
 ### Mobile First
+
 - Responsive grid layouts
 - Touch-friendly buttons (min 44px)
 - Optimized fonts for all screens
@@ -187,6 +206,7 @@ GET    /api/trips/:id/export           Export CSV
 - Safe area padding
 
 ### User Experience
+
 - Modal forms for data entry
 - Real-time calculations
 - Color-coded balances (green/red)
@@ -194,6 +214,7 @@ GET    /api/trips/:id/export           Export CSV
 - Instant feedback
 
 ### Accuracy
+
 - ✅ Penny-perfect rounding
 - ✅ Deterministic distributions
 - ✅ Double-checked math
@@ -201,6 +222,7 @@ GET    /api/trips/:id/export           Export CSV
 - ✅ Ledger sums verified
 
 ### Data Safety
+
 - MongoDB persistence
 - Input validation
 - Error handling
@@ -211,11 +233,13 @@ GET    /api/trips/:id/export           Export CSV
 ## 🧪 Testing
 
 ### Run Tests
+
 ```bash
 npx ts-node --transpile-only lib/utils/calculations.test.ts
 ```
 
 ### Manual Testing
+
 1. Create trip with 5 participants
 2. Add expenses with different splits:
    - Equal split: ₹2,345.50
@@ -228,6 +252,7 @@ npx ts-node --transpile-only lib/utils/calculations.test.ts
 6. Export and verify CSV
 
 ### Expected Results
+
 - Total trip cost calculation correct
 - Per-person balances verified
 - Settlement transactions minimal
@@ -238,21 +263,25 @@ npx ts-node --transpile-only lib/utils/calculations.test.ts
 ## 🔧 Customization
 
 ### Add New Categories
+
 Edit `ExpenseModal.tsx`:
+
 ```typescript
 const CATEGORIES = [
-  'Food',
-  'Accommodation',
-  'Transport',
-  'Activities',
-  'Shopping',
-  'Other',
-  'YourNewCategory'  // Add here
+  "Food",
+  "Accommodation",
+  "Transport",
+  "Activities",
+  "Shopping",
+  "Other",
+  "YourNewCategory", // Add here
 ];
 ```
 
 ### Change Currency
+
 `app/trips/new/page.tsx`:
+
 ```typescript
 <option value="INR">INR (₹)</option>
 <option value="USD">USD ($)</option>
@@ -261,10 +290,12 @@ const CATEGORIES = [
 ```
 
 ### Modify Participants
+
 `app/trips/new/page.tsx`:
+
 ```typescript
 const DEFAULT_PARTICIPANTS = [
-  { id: '1', name: 'Your Name' },
+  { id: "1", name: "Your Name" },
   // ... modify as needed
 ];
 ```
@@ -274,6 +305,7 @@ const DEFAULT_PARTICIPANTS = [
 ## 📊 Database Schema
 
 ### Trips Collection
+
 ```javascript
 {
   _id: ObjectId,
@@ -291,6 +323,7 @@ const DEFAULT_PARTICIPANTS = [
 ```
 
 ### Expenses Collection
+
 ```javascript
 {
   _id: ObjectId,
@@ -318,18 +351,21 @@ const DEFAULT_PARTICIPANTS = [
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
+
 1. Push to GitHub
 2. Connect to Vercel
 3. Add `MONGO_URI` environment variable
 4. Deploy (automatic on push)
 
 ### Docker
+
 ```bash
 docker build -t trip-splitter .
 docker run -p 3000:3000 -e MONGO_URI="..." trip-splitter
 ```
 
 ### Self-Hosted
+
 ```bash
 npm run build
 npm start
@@ -352,12 +388,14 @@ npm start
 ### Common Tasks
 
 **Create a trip:**
+
 1. Homepage → Click "Create New Trip"
 2. Enter title, dates, currency
 3. Modify participants if needed
 4. Click "Create Trip"
 
 **Add expense:**
+
 1. Click "+ Add Expense"
 2. Fill in amount, payer, category, date
 3. Choose split type
@@ -366,21 +404,25 @@ npm start
 6. Click "Add Expense"
 
 **View settlement:**
+
 1. Scroll to "Settlement Needed" section
 2. See who needs to pay whom
 3. Each transaction is optimal (minimal)
 
 **Export data:**
+
 1. Click "Export" button (top right)
 2. CSV file downloads automatically
 3. Open in Excel/Sheets for analysis
 
 **Edit expense:**
+
 1. Click ✏️ icon next to expense
 2. Modal opens with pre-filled data
 3. Modify and click "Update Expense"
 
 **Delete expense:**
+
 1. Click 🗑️ icon next to expense
 2. Confirm deletion
 3. Expense removed, calculations updated
@@ -390,7 +432,9 @@ npm start
 ## ✨ Special Features
 
 ### Deterministic Rounding
+
 When splitting ₹100 among 3 people:
+
 - First person: ₹33.34
 - Second person: ₹33.33
 - Third person: ₹33.33
@@ -399,19 +443,24 @@ When splitting ₹100 among 3 people:
 Order is deterministic (by participant ID).
 
 ### Minimal Settlement
+
 Instead of:
+
 - A pays B: ₹100
 - A pays C: ₹100
 - B pays C: ₹200
 
 We show:
+
 - A pays B: ₹200
 - A pays C: ₹100
 
 (Fewer transactions!)
 
 ### Real-Time Calculations
+
 All numbers update instantly as you:
+
 - Add expenses
 - Edit split details
 - Modify amounts
@@ -422,6 +471,7 @@ All numbers update instantly as you:
 ## 🔐 Security Notes
 
 ### Current Implementation
+
 - ✅ All calculations done server-side and client-side verified
 - ✅ Input validation on all fields
 - ✅ No data logging or external transfers
@@ -429,7 +479,9 @@ All numbers update instantly as you:
 - ⚠️ No authentication (development mode)
 
 ### For Production
+
 Consider adding:
+
 - User authentication (JWT/OAuth)
 - Rate limiting
 - Data encryption
@@ -451,11 +503,13 @@ Consider adding:
 ## 🆘 Troubleshooting
 
 **"Cannot find module"**
+
 ```bash
 npm install --legacy-peer-deps
 ```
 
 **"MongoDB connection failed"**
+
 - Check `.env` file exists with MONGO_URI
 - Verify password (URL encode if special chars)
 - Check IP whitelist in MongoDB Atlas
@@ -464,6 +518,7 @@ npm install --legacy-peer-deps
 App automatically switches to 3001 ✓
 
 **"Data not persisting"**
+
 - Verify MongoDB connection
 - Check trip creation successful
 - Try creating new trip
@@ -473,6 +528,7 @@ App automatically switches to 3001 ✓
 ## 📞 Support Files
 
 Need help? Check these files in order:
+
 1. `STARTUP_GUIDE.md` - Setup issues
 2. `FEATURE_CHECKLIST.md` - What's available
 3. `API_REFERENCE.md` - API details
@@ -483,6 +539,7 @@ Need help? Check these files in order:
 ## 🎉 You're All Set!
 
 Your Trip Splitter is:
+
 - ✅ Fully functional
 - ✅ Mobile responsive
 - ✅ Data persistent
@@ -491,6 +548,7 @@ Your Trip Splitter is:
 - ✅ Tested
 
 ### Next Steps:
+
 1. Run `npm run dev`
 2. Open http://localhost:3001
 3. Create a test trip

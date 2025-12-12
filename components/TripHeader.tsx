@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { format } from 'date-fns';
+import React from "react";
+import { format } from "date-fns";
 
 interface TripHeaderProps {
   title: string;
@@ -31,10 +31,12 @@ export default function TripHeader({
             <h1 className="text-3xl md:text-4xl font-bold mb-2">{title}</h1>
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-blue-100">
               <span className="text-sm md:text-base">
-                {format(start, 'MMM d, yyyy')} - {format(end, 'MMM d, yyyy')}
+                {format(start, "MMM d, yyyy")} - {format(end, "MMM d, yyyy")}
               </span>
               <span className="hidden sm:inline text-blue-300">•</span>
-              <span className="text-sm md:text-base font-semibold">{currency}</span>
+              <span className="text-sm md:text-base font-semibold">
+                {currency}
+              </span>
             </div>
           </div>
 

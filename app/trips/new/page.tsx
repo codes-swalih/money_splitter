@@ -1,27 +1,29 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const DEFAULT_PARTICIPANTS = [
-  { id: '1', name: 'swalih' },
-  { id: '2', name: 'ijas' },
-  { id: '3', name: 'ameen' },
-  { id: '4', name: 'ameer' },
-  { id: '5', name: 'arshad ali' },
+  { id: "1", name: "swalih" },
+  { id: "2", name: "ijas" },
+  { id: "3", name: "ameen" },
+  { id: "4", name: "ameer" },
+  { id: "5", name: "arshad ali" },
 ];
 
 export default function NewTripPage() {
   const router = useRouter();
-  const [title, setTitle] = useState('');
-  const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
-  const [endDate, setEndDate] = useState(
-    new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+  const [title, setTitle] = useState("");
+  const [startDate, setStartDate] = useState(
+    new Date().toISOString().split("T")[0]
   );
-  const [currency, setCurrency] = useState('INR');
+  const [endDate, setEndDate] = useState(
+    new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
+  );
+  const [currency, setCurrency] = useState("INR");
   const [participants, setParticipants] = useState(DEFAULT_PARTICIPANTS);
-  const [newParticipant, setNewParticipant] = useState('');
+  const [newParticipant, setNewParticipant] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleAddParticipant = () => {
@@ -30,7 +32,7 @@ export default function NewTripPage() {
         ...participants,
         { id: Date.now().toString(), name: newParticipant.trim() },
       ]);
-      setNewParticipant('');
+      setNewParticipant("");
     }
   };
 
@@ -43,16 +45,20 @@ export default function NewTripPage() {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/trips', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/trips", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title,
           startDate,
           endDate,
           currency,
-          participants: participants.map(p => ({ ...p, avatarUrl: undefined, email: undefined })),
-          ownerId: 'user-1',
+          participants: participants.map((p) => ({
+            ...p,
+            avatarUrl: undefined,
+            email: undefined,
+          })),
+          ownerId: "user-1",
         }),
       });
 
@@ -60,10 +66,10 @@ export default function NewTripPage() {
         const trip = await res.json();
         router.push(`/trips/${trip._id}`);
       } else {
-        alert('Failed to create trip');
+        alert("Failed to create trip");
       }
     } catch (error) {
-      alert('Error creating trip');
+      alert("Error creating trip");
       console.error(error);
     } finally {
       setLoading(false);
@@ -91,7 +97,7 @@ export default function NewTripPage() {
 
           <form onSubmit={handleSubmit} className="space-y-6 text-black">
             {/* Trip Title */}
-            <div className='text-black'>
+            <div className="text-black">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Trip Title *
               </label>
@@ -181,7 +187,7 @@ export default function NewTripPage() {
                   value={newParticipant}
                   onChange={(e) => setNewParticipant(e.target.value)}
                   onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
+                    if (e.key === "Enter") {
                       e.preventDefault();
                       handleAddParticipant();
                     }
@@ -206,7 +212,7 @@ export default function NewTripPage() {
                 disabled={loading || !title || participants.length < 2}
                 className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed text-base"
               >
-                {loading ? 'Creating...' : 'Create Trip'}
+                {loading ? "Creating..." : "Create Trip"}
               </button>
               <Link
                 href="/"

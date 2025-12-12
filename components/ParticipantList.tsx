@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { ParticipantLedger } from '@/lib/utils/calculations';
+import React from "react";
+import { ParticipantLedger } from "@/lib/utils/calculations";
 
 interface ParticipantListProps {
   participants: Array<{ id: string; name: string; avatarUrl?: string }>;
@@ -18,7 +18,9 @@ export default function ParticipantList({
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
-      <h2 className="text-xl md:text-2xl font-bold mb-4 text-gray-900">Participants</h2>
+      <h2 className="text-xl md:text-2xl font-bold mb-4 text-gray-900">
+        Participants
+      </h2>
       <div className="space-y-3">
         {participants.map((participant) => {
           const balance = getNetBalance(participant.id);
@@ -44,14 +46,22 @@ export default function ParticipantList({
               <div
                 className={`text-right font-bold text-sm md:text-base ml-2 shrink-0 ${
                   isCreditor
-                    ? 'text-green-600'
+                    ? "text-green-600"
                     : isDebtor
-                    ? 'text-red-600'
-                    : 'text-gray-600'
+                    ? "text-red-600"
+                    : "text-gray-600"
                 }`}
               >
-                <div className={isCreditor ? 'text-green-600' : isDebtor ? 'text-red-600' : 'text-gray-400'}>
-                  {isCreditor ? '↓' : isDebtor ? '↑' : '−'}
+                <div
+                  className={
+                    isCreditor
+                      ? "text-green-600"
+                      : isDebtor
+                      ? "text-red-600"
+                      : "text-gray-400"
+                  }
+                >
+                  {isCreditor ? "↓" : isDebtor ? "↑" : "−"}
                 </div>
                 <div className="text-xs md:text-sm">
                   {Math.abs(balance).toFixed(2)}

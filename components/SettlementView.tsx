@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Settlement } from '@/lib/utils/calculations';
+import React from "react";
+import { Settlement } from "@/lib/utils/calculations";
 
 interface SettlementViewProps {
   settlements: Settlement[];
@@ -29,8 +29,11 @@ export default function SettlementView({ settlements }: SettlementViewProps) {
         Settlement Needed
       </h2>
       <div className="text-sm text-gray-600 mb-4">
-        {settlements.length} transaction{settlements.length !== 1 ? 's' : ''} • Total:{' '}
-        <span className="font-semibold text-gray-900">₹{totalAmount.toFixed(2)}</span>
+        {settlements.length} transaction{settlements.length !== 1 ? "s" : ""} •
+        Total:{" "}
+        <span className="font-semibold text-gray-900">
+          ₹{totalAmount.toFixed(2)}
+        </span>
       </div>
 
       <div className="space-y-3">
@@ -68,8 +71,8 @@ export default function SettlementView({ settlements }: SettlementViewProps) {
 
       <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
         <p className="text-sm text-blue-800">
-          <span className="font-semibold">💡 Tip:</span> These transactions settle all debts
-          with the minimum number of transfers.
+          <span className="font-semibold">💡 Tip:</span> These transactions
+          settle all debts with the minimum number of transfers.
         </p>
       </div>
     </div>

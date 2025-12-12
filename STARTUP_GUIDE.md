@@ -5,10 +5,12 @@
 Before running the Trip Splitter, ensure you have:
 
 1. **Node.js** (v18 or higher)
+
    - Download from [nodejs.org](https://nodejs.org/)
    - Verify installation: `node --version` and `npm --version`
 
 2. **MongoDB Atlas Account** (Free tier available)
+
    - Sign up at [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas)
    - Create a free M0 cluster
    - Get your connection string
@@ -47,6 +49,7 @@ npm install --legacy-peer-deps
 ```
 
 This installs all required packages including:
+
 - Next.js 16
 - React 19
 - Mongoose (MongoDB driver)
@@ -71,6 +74,7 @@ npm run dev
 ```
 
 The app will start on:
+
 - Local: http://localhost:3000 (or 3001 if 3000 is in use)
 - Network: http://192.168.x.x:3000
 
@@ -82,6 +86,7 @@ Open your browser and visit the local URL.
 
 1. **Home Page**: You'll see the welcome screen with "Create New Trip" button
 2. **Create Trip**:
+
    - Enter trip name (e.g., "Goa Trip 2024")
    - Set dates
    - Choose currency (INR, USD, EUR, GBP)
@@ -158,6 +163,7 @@ docker run -p 3000:3000 -e MONGO_URI="your_uri" trip-splitter
 To test the app with example data, use these values:
 
 ### Test Expense 1: Food
+
 - Amount: ₹2,345.50
 - Payer: ijas
 - Category: Food
@@ -166,6 +172,7 @@ To test the app with example data, use these values:
 - Description: "Dinner at restaurant"
 
 ### Test Expense 2: Accommodation
+
 - Amount: ₹8,000
 - Payer: ameen
 - Category: Accommodation
@@ -174,28 +181,34 @@ To test the app with example data, use these values:
 - Description: "Hotel booking"
 
 ### Expected Results
+
 - ijas: +₹1,876.40
 - Others: ~-₹469 each
 
 ## 🐛 Troubleshooting
 
 ### "Cannot find module 'mongoose'"
+
 ```bash
 npm install --legacy-peer-deps
 ```
 
 ### "MongoDB connection failed"
+
 - Check your MONGO_URI in `.env`
 - Verify IP whitelist in MongoDB Atlas (add 0.0.0.0/0 for development)
 - Check password doesn't have special characters (or URL encode them)
 
 ### "Port 3000 already in use"
+
 The app will automatically use port 3001. That's fine!
 
 ### "Cannot GET /trips/[id]"
+
 This is normal in development. The app will work on the browser but API might need MongoDB connection.
 
 ### Slow build or "Turbopack" errors
+
 - Delete `.next` folder: `rm -rf .next`
 - Reinstall: `npm install --legacy-peer-deps`
 - Run again: `npm run dev`
@@ -221,7 +234,7 @@ project/
 ## 🎯 Key Features to Try
 
 1. **Add Multiple Expenses**: Create 3-5 different expenses
-2. **Try Different Split Types**: 
+2. **Try Different Split Types**:
    - Equal split
    - Selected people only
    - Custom amounts

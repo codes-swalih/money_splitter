@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { dbConnect } from '@/lib/db/connection';
-import { Trip, Expense } from '@/lib/db/models';
-import { calculateLedger, generateSettlement } from '@/lib/utils/calculations';
+import { NextRequest, NextResponse } from "next/server";
+import { dbConnect } from "@/lib/db/connection";
+import { Trip, Expense } from "@/lib/db/models";
+import { calculateLedger, generateSettlement } from "@/lib/utils/calculations";
 
 export async function GET(
   request: NextRequest,
@@ -13,7 +13,7 @@ export async function GET(
 
     const trip = await Trip.findById(id);
     if (!trip) {
-      return NextResponse.json({ error: 'Trip not found' }, { status: 404 });
+      return NextResponse.json({ error: "Trip not found" }, { status: 404 });
     }
 
     const expenses = await Expense.find({ tripId: id }).sort({ date: -1 });
@@ -44,7 +44,7 @@ export async function GET(
     });
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to fetch trip' },
+      { error: "Failed to fetch trip" },
       { status: 500 }
     );
   }
@@ -61,13 +61,13 @@ export async function PUT(
 
     const trip = await Trip.findByIdAndUpdate(id, body, { new: true });
     if (!trip) {
-      return NextResponse.json({ error: 'Trip not found' }, { status: 404 });
+      return NextResponse.json({ error: "Trip not found" }, { status: 404 });
     }
 
     return NextResponse.json(trip);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to update trip' },
+      { error: "Failed to update trip" },
       { status: 500 }
     );
   }
@@ -87,7 +87,7 @@ export async function DELETE(
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to delete trip' },
+      { error: "Failed to delete trip" },
       { status: 500 }
     );
   }

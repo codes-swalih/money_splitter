@@ -38,7 +38,7 @@ export default function ExpenseList({
   const getParticipantName = (id: string) => {
     return participants.find((p) => p.id === id)?.name || id;
   };
-  
+
   const getCategoryColor = (category: string) => {
     const colors: Record<string, string> = {
       "Car rental": "bg-indigo-100 text-indigo-800",

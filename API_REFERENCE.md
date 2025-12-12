@@ -1,11 +1,13 @@
 # Trip Splitter - API Reference
 
 ## Base URL
+
 ```
 http://localhost:3001/api
 ```
 
 ## Authentication
+
 Currently: No authentication required (development mode)
 Future: Add JWT or session-based auth
 
@@ -14,6 +16,7 @@ Future: Add JWT or session-based auth
 ## Trips Endpoints
 
 ### Create Trip
+
 ```
 POST /api/trips
 Content-Type: application/json
@@ -48,6 +51,7 @@ Response (201):
 ```
 
 ### Get Trip with Calculations
+
 ```
 GET /api/trips/:id
 
@@ -79,6 +83,7 @@ Response (200):
 ```
 
 ### Update Trip
+
 ```
 PUT /api/trips/:id
 Content-Type: application/json
@@ -92,6 +97,7 @@ Response (200): Updated trip object
 ```
 
 ### Delete Trip
+
 ```
 DELETE /api/trips/:id
 
@@ -106,6 +112,7 @@ Response (200):
 ## Expenses Endpoints
 
 ### Add Expense to Trip
+
 ```
 POST /api/trips/:id/expenses
 Content-Type: application/json
@@ -144,6 +151,7 @@ Response (201):
 ```
 
 ### Update Expense
+
 ```
 PUT /api/trips/:id/expenses/:expenseId
 Content-Type: application/json
@@ -158,6 +166,7 @@ Response (200): Updated expense object
 ```
 
 ### Delete Expense
+
 ```
 DELETE /api/trips/:id/expenses/:expenseId
 
@@ -172,17 +181,22 @@ Response (200):
 ## Split Type Examples
 
 ### 1. Equal Split (EQUAL)
+
 All participants split equally.
+
 ```json
 {
   "splitType": "EQUAL",
   "splitDetails": {}
 }
 ```
+
 Result: Each person pays `total / num_participants`
 
 ### 2. Selected Equal Split (SELECTED_EQUAL)
+
 Only selected participants split equally.
+
 ```json
 {
   "splitType": "SELECTED_EQUAL",
@@ -193,10 +207,13 @@ Only selected participants split equally.
   }
 }
 ```
+
 Result: Only participants 1, 3, 5 split equally
 
 ### 3. Custom Amounts (CUSTOM_AMOUNTS)
+
 Each person pays exact amount (must sum to total).
+
 ```json
 {
   "splitType": "CUSTOM_AMOUNTS",
@@ -209,10 +226,13 @@ Each person pays exact amount (must sum to total).
   }
 }
 ```
+
 Validation: Sum must equal totalExpense ±0.01
 
 ### 4. Percentages (PERCENTAGES)
+
 Each person pays percentage (must sum to 100%).
+
 ```json
 {
   "splitType": "PERCENTAGES",
@@ -225,6 +245,7 @@ Each person pays percentage (must sum to 100%).
   }
 }
 ```
+
 Validation: Sum must equal 100% ±0.01
 
 ---
@@ -232,6 +253,7 @@ Validation: Sum must equal 100% ±0.01
 ## Export Endpoint
 
 ### Export Trip as CSV
+
 ```
 GET /api/trips/:id/export?format=csv
 
@@ -265,6 +287,7 @@ From,To,Amount
 ## Error Responses
 
 ### 400 Bad Request
+
 ```json
 {
   "error": "Missing required fields"
@@ -272,6 +295,7 @@ From,To,Amount
 ```
 
 ### 404 Not Found
+
 ```json
 {
   "error": "Trip not found"
@@ -279,6 +303,7 @@ From,To,Amount
 ```
 
 ### 400 Validation Error
+
 ```json
 {
   "error": "Custom amounts must sum to 2500 (got 2400)"
@@ -286,6 +311,7 @@ From,To,Amount
 ```
 
 ### 500 Server Error
+
 ```json
 {
   "error": "Failed to create trip"
@@ -297,6 +323,7 @@ From,To,Amount
 ## Calculation Examples
 
 ### Example 1: Simple Equal Split
+
 ```
 Expense: ₹1,000 (no tax/tip)
 Participants: 5 people
@@ -312,6 +339,7 @@ Ledger:
 ```
 
 ### Example 2: With Tax & Tip
+
 ```
 Expense: ₹1,000
 Tax: 5% = 50
@@ -333,6 +361,7 @@ Ledger:
 ```
 
 ### Example 3: Custom Amounts
+
 ```
 Expense: ₹1,200 for hotel room
 Participants: 4 people
@@ -348,6 +377,7 @@ Validation: 600 + 200 + 200 + 200 = 1200 ✓
 ```
 
 ### Example 4: Settlement
+
 ```
 Trip with 3 people:
 
@@ -369,7 +399,9 @@ Result: 2 transactions
 ---
 
 ## Pagination (Future Feature)
+
 Not yet implemented, but reserved endpoints:
+
 ```
 GET /api/trips/:id/expenses?page=1&limit=20
 GET /api/trips?page=1&limit=10
@@ -378,7 +410,9 @@ GET /api/trips?page=1&limit=10
 ---
 
 ## Filtering (Future Feature)
+
 Reserved query parameters:
+
 ```
 GET /api/trips/:id/expenses?category=Food
 GET /api/trips/:id/expenses?payer=2
@@ -388,7 +422,9 @@ GET /api/trips/:id/expenses?date_from=2024-01-01&date_to=2024-12-31
 ---
 
 ## Rate Limiting (Future Feature)
+
 Reserved headers (not yet implemented):
+
 ```
 X-RateLimit-Limit: 100
 X-RateLimit-Remaining: 99
@@ -398,7 +434,9 @@ X-RateLimit-Reset: 1702400000
 ---
 
 ## WebSocket Events (Future Feature)
+
 Planned for real-time updates:
+
 ```
 expense:created
 expense:updated
@@ -412,6 +450,7 @@ settlement:calculated
 ## Testing API with cURL
 
 ### Create Trip
+
 ```bash
 curl -X POST http://localhost:3001/api/trips \
   -H "Content-Type: application/json" \
@@ -429,11 +468,13 @@ curl -X POST http://localhost:3001/api/trips \
 ```
 
 ### Get Trip
+
 ```bash
 curl http://localhost:3001/api/trips/507f1f77bcf86cd799439011
 ```
 
 ### Add Expense
+
 ```bash
 curl -X POST http://localhost:3001/api/trips/507f1f77bcf86cd799439011/expenses \
   -H "Content-Type: application/json" \
@@ -449,6 +490,7 @@ curl -X POST http://localhost:3001/api/trips/507f1f77bcf86cd799439011/expenses \
 ```
 
 ### Export CSV
+
 ```bash
 curl http://localhost:3001/api/trips/507f1f77bcf86cd799439011/export?format=csv > trip.csv
 ```
@@ -470,7 +512,9 @@ curl http://localhost:3001/api/trips/507f1f77bcf86cd799439011/export?format=csv 
 ---
 
 ## Rate Limiting (Future)
+
 Currently unlimited. Plan to implement:
+
 - 1000 requests per hour per IP
 - 100 requests per minute per IP
 

@@ -3,9 +3,11 @@
 ## 🚀 Start in 30 Seconds
 
 ### Already Running?
+
 **Go to**: http://localhost:3001
 
 ### Not Running?
+
 ```bash
 cd /Users/muhammedswalih/projects/panchayath_trip
 npm run dev
@@ -45,6 +47,7 @@ npm run dev
 ## 👥 Check Settlement
 
 **Section**: "Settlement Needed"
+
 - Shows who pays whom
 - Shows how many transactions
 - Shows total amount
@@ -54,6 +57,7 @@ npm run dev
 ## 💾 Export Data
 
 **Button**: "Export" (top right)
+
 - Downloads CSV file
 - Open in Excel/Sheets
 - Has all expenses and ledger
@@ -64,12 +68,12 @@ npm run dev
 
 Read these files (in your project folder):
 
-| File | For |
-|------|-----|
-| `STARTUP_GUIDE.md` | Setup & troubleshooting |
-| `FEATURE_CHECKLIST.md` | What's available |
-| `API_REFERENCE.md` | How the API works |
-| `README_TRIP_SPLITTER.md` | Full documentation |
+| File                      | For                     |
+| ------------------------- | ----------------------- |
+| `STARTUP_GUIDE.md`        | Setup & troubleshooting |
+| `FEATURE_CHECKLIST.md`    | What's available        |
+| `API_REFERENCE.md`        | How the API works       |
+| `README_TRIP_SPLITTER.md` | Full documentation      |
 
 ---
 
@@ -88,6 +92,7 @@ Read these files (in your project folder):
 ## 🔧 Config
 
 **MONGO_URI** in `.env`:
+
 ```env
 MONGO_URI=your_mongodb_connection_string
 ```

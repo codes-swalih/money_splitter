@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import TripHeader from '@/components/TripHeader';
-import ParticipantList from '@/components/ParticipantList';
-import ExpenseModal from '@/components/ExpenseModal';
-import ExpenseList from '@/components/ExpenseList';
-import SettlementView from '@/components/SettlementView';
-import DashboardStats from '@/components/DashboardStats';
-import { ParticipantLedger, Settlement } from '@/lib/utils/calculations';
-import { downloadCSV, generateCSVExport } from '@/lib/utils/export';
-import Link from 'next/link';
+import React, { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import TripHeader from "@/components/TripHeader";
+import ParticipantList from "@/components/ParticipantList";
+import ExpenseModal from "@/components/ExpenseModal";
+import ExpenseList from "@/components/ExpenseList";
+import SettlementView from "@/components/SettlementView";
+import DashboardStats from "@/components/DashboardStats";
+import { ParticipantLedger, Settlement } from "@/lib/utils/calculations";
+import { downloadCSV, generateCSVExport } from "@/lib/utils/export";
+import Link from "next/link";
 
 interface Expense {
   _id: string;
@@ -52,7 +52,7 @@ export default function TripPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     fetchTripData();
@@ -69,12 +69,12 @@ export default function TripPage() {
         setLedger(data.ledger);
         setSettlements(data.settlements);
       } else {
-        alert('Trip not found');
-        router.push('/');
+        alert("Trip not found");
+        router.push("/");
       }
     } catch (error) {
-      console.error('Error fetching trip:', error);
-      alert('Error loading trip');
+      console.error("Error fetching trip:", error);
+      alert("Error loading trip");
     } finally {
       setLoading(false);
     }
@@ -83,8 +83,8 @@ export default function TripPage() {
   const handleAddExpense = async (expenseData: any) => {
     try {
       const res = await fetch(`/api/trips/${tripId}/expenses`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(expenseData),
       });
 
@@ -92,11 +92,11 @@ export default function TripPage() {
         await fetchTripData();
       } else {
         const error = await res.json();
-        alert(error.error || 'Failed to add expense');
+        alert(error.error || "Failed to add expense");
       }
     } catch (error) {
-      console.error('Error adding expense:', error);
-      alert('Error adding expense');
+      console.error("Error adding expense:", error);
+      alert("Error adding expense");
     }
   };
 
@@ -107,8 +107,8 @@ export default function TripPage() {
       const res = await fetch(
         `/api/trips/${tripId}/expenses/${editingExpense._id}`,
         {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(expenseData),
         }
       );
@@ -117,31 +117,30 @@ export default function TripPage() {
         setEditingExpense(null);
         await fetchTripData();
       } else {
-        alert('Failed to update expense');
+        alert("Failed to update expense");
       }
     } catch (error) {
-      console.error('Error updating expense:', error);
-      alert('Error updating expense');
+      console.error("Error updating expense:", error);
+      alert("Error updating expense");
     }
   };
 
   const handleDeleteExpense = async (expenseId: string) => {
-    if (!confirm('Are you sure you want to delete this expense?')) return;
+    if (!confirm("Are you sure you want to delete this expense?")) return;
 
     try {
-      const res = await fetch(
-        `/api/trips/${tripId}/expenses/${expenseId}`,
-        { method: 'DELETE' }
-      );
+      const res = await fetch(`/api/trips/${tripId}/expenses/${expenseId}`, {
+        method: "DELETE",
+      });
 
       if (res.ok) {
         await fetchTripData();
       } else {
-        alert('Failed to delete expense');
+        alert("Failed to delete expense");
       }
     } catch (error) {
-      console.error('Error deleting expense:', error);
-      alert('Error deleting expense');
+      console.error("Error deleting expense:", error);
+      alert("Error deleting expense");
     }
   };
 
@@ -153,21 +152,21 @@ export default function TripPage() {
         downloadCSV(csv, `trip-${trip?.title}-${Date.now()}.csv`);
       }
     } catch (error) {
-      alert('Error exporting trip');
+      alert("Error exporting trip");
     }
   };
 
   const handleShare = () => {
     const shareUrl = `${window.location.origin}/trips/${tripId}`;
     navigator.clipboard.writeText(shareUrl);
-    alert('Trip link copied to clipboard!');
+    alert("Trip link copied to clipboard!");
   };
 
   const filteredExpenses = expenses.filter((e) =>
-    filter === ''
+    filter === ""
       ? true
-      : filter === 'category'
-      ? e.category.toLowerCase().includes('')
+      : filter === "category"
+      ? e.category.toLowerCase().includes("")
       : true
   );
 
@@ -220,10 +219,7 @@ export default function TripPage() {
         <div className="grid lg:grid-cols-3 gap-6 md:gap-8">
           {/* Left Column - Participants */}
           <div className="lg:col-span-1">
-            <ParticipantList
-              participants={trip.participants}
-              ledger={ledger}
-            />
+            <ParticipantList participants={trip.participants} ledger={ledger} />
           </div>
 
           {/* Right Column - Expenses & Settlement */}
@@ -234,7 +230,7 @@ export default function TripPage() {
                 setEditingExpense(null);
                 setIsModalOpen(true);
               }}
-                className="w-full md:w-auto bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all shadow-md"
+              className="w-full md:w-auto bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all shadow-md"
             >
               + Add Expense
             </button>

@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { dbConnect } from '@/lib/db/connection';
-import { Trip, Expense } from '@/lib/db/models';
-import { calculateExpenseSplit } from '@/lib/utils/calculations';
+import { NextRequest, NextResponse } from "next/server";
+import { dbConnect } from "@/lib/db/connection";
+import { Trip, Expense } from "@/lib/db/models";
+import { calculateExpenseSplit } from "@/lib/utils/calculations";
 
 export async function POST(
   request: NextRequest,
@@ -15,7 +15,7 @@ export async function POST(
     // Verify trip exists
     const trip = await Trip.findById(id);
     if (!trip) {
-      return NextResponse.json({ error: 'Trip not found' }, { status: 404 });
+      return NextResponse.json({ error: "Trip not found" }, { status: 404 });
     }
 
     const {
@@ -36,7 +36,7 @@ export async function POST(
     // Validate expense
     if (!amount || !payerId || !category || !date || !splitType) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: "Missing required fields" },
         { status: 400 }
       );
     }
@@ -44,7 +44,7 @@ export async function POST(
     // Validate that payer is in participants
     if (!trip.participants.find((p: any) => p.id === payerId)) {
       return NextResponse.json(
-        { error: 'Payer is not a trip participant' },
+        { error: "Payer is not a trip participant" },
         { status: 400 }
       );
     }
@@ -62,10 +62,7 @@ export async function POST(
         tip
       );
     } catch (error: any) {
-      return NextResponse.json(
-        { error: error.message },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
     const expense = await Expense.create({
@@ -88,7 +85,7 @@ export async function POST(
     return NextResponse.json(expense, { status: 201 });
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to create expense' },
+      { error: "Failed to create expense" },
       { status: 500 }
     );
   }

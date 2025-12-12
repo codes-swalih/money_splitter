@@ -1,3 +1,6 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import db from "@/assets/dp.jpeg";
 import Image from "next/image";
@@ -11,13 +14,46 @@ const DEFAULT_PARTICIPANTS = [
 ];
 
 export default function Home() {
+  const [trips, setTrips] = useState<any[]>([]);
+  const [loadingTrips, setLoadingTrips] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchTrips = async () => {
+      try {
+        const res = await fetch('/api/trips?ownerId=user-1');
+        if (res.ok) {
+          const data = await res.json();
+          if (mounted) setTrips(data.trips || []);
+        } else {
+          console.warn('Failed to load trips');
+        }
+      } catch (e) {
+        console.error('Error fetching trips:', e);
+      } finally {
+        if (mounted) setLoadingTrips(false);
+      }
+    };
+
+    fetchTrips();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-blue-600 text-white px-4 py-6 md:px-6 md:py-8 shadow-lg">
         <div className=" flex flex-col items-center">
           <div className=" w-24 h-24 rounded-b-full">
-            <Image src={db} alt="" className="w-full h-full object-cover rounded-full" width={100} height={100}/>
+            <Image
+              src={db}
+              alt=""
+              className="w-full h-full object-cover rounded-full"
+              width={100}
+              height={100}
+            />
           </div>
           <div className="max-w-7xl mx-auto text-center">
             <h1 className="text-2xl md:text-5xl font-bold mb-2">
@@ -105,6 +141,29 @@ export default function Home() {
                 </span>
               ))}
             </div>
+          </div>
+          
+          <div className="mt-6 bg-white rounded-lg shadow-sm p-4 md:p-6 border border-gray-200">
+            <h3 className="font-semibold text-gray-900 mb-3">Your Trips</h3>
+            {loadingTrips ? (
+              <p className="text-sm text-gray-600">Loading your trips…</p>
+            ) : trips.length === 0 ? (
+              <p className="text-sm text-gray-600">You have no trips yet. Create one to get started.</p>
+            ) : (
+              <div className="space-y-3">
+                {trips.map((t) => (
+                  <Link key={t._id} href={`/trips/${t._id}`} className="block p-3 rounded-lg hover:bg-gray-50 border border-gray-100">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="font-semibold text-gray-900">{t.title}</div>
+                        <div className="text-xs text-gray-500">{new Date(t.startDate).toLocaleDateString()} – {new Date(t.endDate).toLocaleDateString()}</div>
+                      </div>
+                      <div className="text-sm text-gray-500">{t.participants?.length || 0} people</div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </main>
