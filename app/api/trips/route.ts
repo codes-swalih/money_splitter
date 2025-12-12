@@ -28,9 +28,18 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(trip, { status: 201 });
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Failed to create trip' },
-      { status: 500 }
-    );
+    // Log full error on the server for diagnosis
+    // (kept out of default client response to avoid leaking internals)
+    // If you set DEBUG_API=true in the environment, the real error
+    // message will be returned in the response to help debugging.
+    console.error('POST /api/trips error:', error);
+    const debug = process.env.DEBUG_API === 'true';
+    const message = debug
+      ? error instanceof Error
+        ? error.message
+        : String(error)
+      : 'Failed to create trip';
+
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
