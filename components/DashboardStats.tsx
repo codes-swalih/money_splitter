@@ -26,42 +26,42 @@ export default function DashboardStats({
   const averagePerPerson = ledger.length > 0 ? totalCost / ledger.length : 0;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
       {/* Total Cost */}
       <div className="bg-blue-50 rounded-lg shadow-md p-4 md:p-6 border border-blue-200">
-        <div className="text-gray-700 text-sm font-semibold mb-2">
+        <div className="text-gray-700 text-sm font-semibold">
           Total Trip Cost
         </div>
-        <div className="text-3xl md:text-4xl font-bold text-blue-600">
+        <div className="text-xl md:text-4xl font-bold text-blue-600">
           {trip.currency} {totalCost.toFixed(2)}
         </div>
-        <div className="text-xs md:text-sm text-gray-600 mt-2">
+        <div className="text-xs md:text-sm text-gray-600">
           {expenses.length} expense{expenses.length !== 1 ? "s" : ""}
         </div>
       </div>
 
       {/* Highest Spender */}
       <div className="bg-purple-50 rounded-lg shadow-md p-4 md:p-6 border border-purple-200">
-        <div className="text-gray-700 text-sm font-semibold mb-2">
+        <div className="text-gray-700 text-sm font-semibold ">
           Highest Spender
         </div>
         <div className="text-xl md:text-2xl font-bold text-purple-600 truncate">
           {highestSpender?.name || "N/A"}
         </div>
-        <div className="text-lg md:text-xl font-semibold text-purple-700 mt-1">
+        <div className="text-lg md:text-xl font-semibold text-purple-700 ">
           {trip.currency} {highestSpender?.totalPaid.toFixed(2) || "0.00"}
         </div>
       </div>
 
       {/* Average Per Person */}
       <div className="bg-green-50 rounded-lg shadow-md p-4 md:p-6 border border-green-200">
-        <div className="text-gray-700 text-sm font-semibold mb-2">
+        <div className="text-gray-700 text-sm font-semibold ">
           Avg per Person
         </div>
-        <div className="text-3xl md:text-4xl font-bold text-green-600">
+        <div className="text-xl md:text-4xl font-bold text-green-600">
           {trip.currency} {averagePerPerson.toFixed(2)}
         </div>
-        <div className="text-xs md:text-sm text-gray-600 mt-2">
+        <div className="text-xs md:text-sm text-gray-600">
           {ledger.length} participant{ledger.length !== 1 ? "s" : ""}
         </div>
       </div>

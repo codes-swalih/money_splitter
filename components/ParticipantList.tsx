@@ -21,7 +21,7 @@ export default function ParticipantList({
       <h2 className="text-xl md:text-2xl font-bold mb-4 text-gray-900">
         Participants
       </h2>
-      <div className="space-y-3">
+      <div className="space-y-1">
         {participants.map((participant) => {
           const balance = getNetBalance(participant.id);
           const isCreditor = balance > 0.01;
@@ -30,10 +30,10 @@ export default function ParticipantList({
           return (
             <div
               key={participant.id}
-              className="flex items-center justify-between p-3 md:p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+              className="flex items-center justify-between p-2 md:p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
             >
-              <div className="flex items-center gap-3 flex-1 min-w-0">
-                <div className="shrink-0 w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-sm">
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                <div className="shrink-0 w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-sm">
                   {participant.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="min-w-0">
