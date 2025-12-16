@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { isTripExpense } from "@/lib/utils/calculations";
 
 interface Expense {
   _id: string;
@@ -101,6 +102,19 @@ export default function ExpenseList({
                     >
                       {expense.category}
                     </span>
+                    {isTripExpense(
+                      expense.splitType as "EQUAL" | "SELECTED_EQUAL" | "CUSTOM_AMOUNTS" | "PERCENTAGES",
+                      expense.splitDetails,
+                      participants.map((p) => p.id)
+                    ) ? (
+                      <span className="text-xs font-semibold px-2 py-1 rounded bg-blue-100 text-blue-800">
+                        Trip Expense
+                      </span>
+                    ) : (
+                      <span className="text-xs font-semibold px-2 py-1 rounded bg-orange-100 text-orange-800">
+                        Personal Expense
+                      </span>
+                    )}
                     <span className="text-xs text-gray-600">
                       {new Date(expense.date).toLocaleDateString()}
                     </span>

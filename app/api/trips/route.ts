@@ -2,22 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/lib/db/connection";
 import { Trip, Expense } from "@/lib/db/models";
 import { calculateLedger, generateSettlement } from "@/lib/utils/calculations";
+import { getCurrentUser } from "@/lib/utils/auth";
 
 export async function POST(request: NextRequest) {
   try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     await dbConnect();
     const body = await request.json();
 
-    const {
-      title,
-      startDate,
-      endDate,
-      currency = "INR",
-      participants,
-      ownerId,
-    } = body;
+    const { title, startDate, endDate, currency = "INR", participants } = body;
 
-    if (!title || !startDate || !endDate || !participants || !ownerId) {
+    if (!title || !startDate || !endDate || !participants) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -30,7 +29,7 @@ export async function POST(request: NextRequest) {
       endDate: new Date(endDate),
       currency,
       participants,
-      ownerId,
+      ownerId: user.userId,
     });
 
     return NextResponse.json(trip, { status: 201 });
@@ -53,13 +52,16 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     await dbConnect();
 
-    // Allow optional ownerId query param, default to 'user-1' for local/demo use
-    const url = new URL(request.url);
-    const ownerId = url.searchParams.get("ownerId") || "user-1";
-
-    const trips = await Trip.find({ ownerId }).sort({ createdAt: -1 }).lean();
+    const trips = await Trip.find({ ownerId: user.userId })
+      .sort({ createdAt: -1 })
+      .lean();
 
     return NextResponse.json({ trips }, { status: 200 });
   } catch (error) {

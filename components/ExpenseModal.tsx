@@ -50,6 +50,8 @@ export default function ExpenseModal({
     {}
   );
   const [percentages, setPercentages] = useState<Record<string, string>>({});
+  const [receiptFile, setReceiptFile] = useState<File | null>(null);
+  const [uploadingReceipt, setUploadingReceipt] = useState(false);
 
   useEffect(() => {
     if (editingExpense) {
@@ -88,7 +90,7 @@ export default function ExpenseModal({
     setPercentages({});
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const expenseData: any = {
@@ -112,6 +114,20 @@ export default function ExpenseModal({
       expenseData.splitDetails = customAmounts;
     } else if (splitType === "PERCENTAGES") {
       expenseData.splitDetails = percentages;
+    }
+
+    // Handle receipt upload
+    if (receiptFile) {
+      setUploadingReceipt(true);
+      try {
+        // In a real app, you'd upload to cloud storage here
+        // For now, we'll just include a placeholder
+        expenseData.receiptUrl = "uploaded"; // Placeholder
+      } catch (error) {
+        console.error("Failed to upload receipt:", error);
+      } finally {
+        setUploadingReceipt(false);
+      }
     }
 
     onSubmit(expenseData);
@@ -153,7 +169,7 @@ export default function ExpenseModal({
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="form-input"
                 placeholder="0.00"
               />
             </div>
@@ -166,7 +182,7 @@ export default function ExpenseModal({
                 value={payerId}
                 onChange={(e) => setPayerId(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="form-input"
               >
                 <option value="">Select person</option>
                 {participants.map((p) => (
@@ -187,7 +203,7 @@ export default function ExpenseModal({
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="form-input"
               >
                 {CATEGORIES.map((cat) => (
                   <option key={cat} value={cat}>
@@ -206,7 +222,7 @@ export default function ExpenseModal({
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="form-input"
               />
             </div>
           </div>
@@ -220,9 +236,25 @@ export default function ExpenseModal({
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="form-input"
               placeholder="What was this for?"
             />
+          </div>
+
+          {/* Receipt Upload */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Receipt (Optional)
+            </label>
+            <input
+              type="file"
+              accept="image/*,.pdf"
+              onChange={(e) => setReceiptFile(e.target.files?.[0] || null)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Upload a photo or PDF of your receipt (max 5MB)
+            </p>
           </div>
 
           {/* Tax & Tip */}
@@ -261,33 +293,58 @@ export default function ExpenseModal({
             <label className="block text-sm font-semibold text-gray-700 mb-3">
               Split Type
             </label>
+            <p className="text-xs text-gray-500 mb-3 p-2 bg-blue-50 rounded">
+              💡 <strong>Tip:</strong> Use "Equal among selected" to split only
+              between specific people (e.g., cigarettes shared between 2
+              friends)
+            </p>
             <div className="space-y-2">
-              {["EQUAL", "SELECTED_EQUAL", "CUSTOM_AMOUNTS", "PERCENTAGES"].map(
-                (type) => (
-                  <label
-                    key={type}
-                    className="flex items-center gap-2 cursor-pointer"
+              {[
+                {
+                  value: "EQUAL",
+                  label: "Equal among all",
+                  type: "Trip Expense",
+                },
+                {
+                  value: "SELECTED_EQUAL",
+                  label: "Equal among selected",
+                  type: "Personal Expense",
+                },
+                {
+                  value: "CUSTOM_AMOUNTS",
+                  label: "Custom amounts",
+                  type: "Personal Expense",
+                },
+                {
+                  value: "PERCENTAGES",
+                  label: "By percentage",
+                  type: "Personal Expense",
+                },
+              ].map(({ value, label, type }) => (
+                <label
+                  key={value}
+                  className="flex items-center gap-2 cursor-pointer p-2 rounded hover:bg-gray-50"
+                >
+                  <input
+                    type="radio"
+                    name="splitType"
+                    value={value}
+                    checked={splitType === value}
+                    onChange={(e) => setSplitType(e.target.value)}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-sm text-gray-700 flex-1">{label}</span>
+                  <span
+                    className={`text-xs px-2 py-1 rounded font-medium ${
+                      type === "Trip Expense"
+                        ? "bg-blue-100 text-blue-800"
+                        : "bg-orange-100 text-orange-800"
+                    }`}
                   >
-                    <input
-                      type="radio"
-                      name="splitType"
-                      value={type}
-                      checked={splitType === type}
-                      onChange={(e) => setSplitType(e.target.value)}
-                      className="w-4 h-4"
-                    />
-                    <span className="text-sm text-gray-700">
-                      {type === "EQUAL"
-                        ? "Equal among all"
-                        : type === "SELECTED_EQUAL"
-                        ? "Equal among selected"
-                        : type === "CUSTOM_AMOUNTS"
-                        ? "Custom amounts"
-                        : "Percentages"}
-                    </span>
-                  </label>
-                )
-              )}
+                    {type}
+                  </span>
+                </label>
+              ))}
             </div>
           </div>
 
@@ -367,14 +424,20 @@ export default function ExpenseModal({
           <div className="flex gap-3 pt-4">
             <button
               type="submit"
-              className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              disabled={uploadingReceipt}
+              className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {editingExpense ? "Update Expense" : "Add Expense"}
+              {uploadingReceipt
+                ? "Uploading..."
+                : editingExpense
+                ? "Update Expense"
+                : "Add Expense"}
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+              disabled={uploadingReceipt}
+              className="flex-1 btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Cancel
             </button>

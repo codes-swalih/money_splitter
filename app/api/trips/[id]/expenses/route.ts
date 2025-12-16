@@ -2,12 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/lib/db/connection";
 import { Trip, Expense } from "@/lib/db/models";
 import { calculateExpenseSplit } from "@/lib/utils/calculations";
+import { getCurrentUser } from "@/lib/utils/auth";
 
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     await dbConnect();
     const { id } = await params;
     const body = await request.json();
@@ -18,6 +24,9 @@ export async function POST(
       return NextResponse.json({ error: "Trip not found" }, { status: 404 });
     }
 
+    if (trip.ownerId !== user.userId) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
     const {
       amount,
       payerId,

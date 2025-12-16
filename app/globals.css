@@ -25,6 +25,40 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Mobile-first responsive design */
+* {
+  box-sizing: border-box;
+}
+
+/* Improve touch targets for mobile */
+button,
+input,
+select,
+textarea,
+[role="button"] {
+  min-height: 44px; /* iOS Human Interface Guidelines */
+  min-width: 44px;
+}
+
+/* Better focus states for accessibility */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent horizontal scroll on mobile */
+body {
+  overflow-x: hidden;
+}
+
 /* Make input/select/textarea text and placeholder color black across the app */
 input,
 select,
@@ -45,4 +79,130 @@ input:-ms-input-placeholder {
 }
 input::-ms-input-placeholder {
   color: #000000 !important;
+}
+
+/* Professional button styles */
+.btn-primary {
+  @apply bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-gray-800 font-semibold py-3 px-6 rounded-lg hover:bg-gray-300 transition-all duration-200;
+}
+
+.btn-danger {
+  @apply bg-red-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-red-700 transition-all duration-200;
+}
+
+.btn-success {
+  @apply bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 transition-all duration-200;
+}
+
+/* Improved form styles */
+.form-input {
+  @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black placeholder-gray-500 transition-all duration-200;
+}
+
+.form-label {
+  @apply block text-sm font-semibold text-gray-700 mb-2;
+}
+
+/* Better modal styles for mobile */
+.modal-overlay {
+  @apply fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 backdrop-blur-sm;
+}
+
+.modal-content {
+  @apply bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto;
+}
+
+/* Professional loading spinner */
+.spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Improved scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Mobile-optimized grid layouts */
+.grid-responsive {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-responsive {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Professional card hover effects */
+.card-hover {
+  @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
+}
+
+/* Status indicators */
+.status-success {
+  @apply bg-green-100 text-green-800 border border-green-200;
+}
+
+.status-warning {
+  @apply bg-yellow-100 text-yellow-800 border border-yellow-200;
+}
+
+.status-error {
+  @apply bg-red-100 text-red-800 border border-red-200;
+}
+
+/* Avatar styles */
+.avatar {
+  @apply w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm;
+}
+
+/* Improved typography */
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Focus visible improvements */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
 }

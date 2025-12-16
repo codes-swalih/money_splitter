@@ -1,12 +1,35 @@
+/**
+ * Rounds a number to two decimal places
+ */
+export function roundToTwoDec(num: number): number {
+  return Math.round(num * 100) / 100;
+}
+
+// ============================================================================
+// TYPE DEFINITIONS
+// ============================================================================
+
+export interface Participant {
+  id: string;
+  name: string;
+  avatarUrl?: string;
+  email?: string;
+}
+
 export interface SplitDetail {
   [participantId: string]: number;
 }
 
-export interface ExpenseCalculation {
-  totalExpense: number;
-  taxAmount: number;
-  tipAmount: number;
-  shares: SplitDetail;
+export interface ExpenseInput {
+  id: string;
+  payerId: string;
+  amount: number;
+  taxPercent?: number;
+  taxAbsolute?: number;
+  tipPercent?: number;
+  tipAbsolute?: number;
+  splitType: "EQUAL" | "SELECTED_EQUAL" | "CUSTOM_AMOUNTS" | "PERCENTAGES";
+  splitDetails: SplitDetail;
 }
 
 export interface ParticipantLedger {
@@ -21,16 +44,27 @@ export interface Settlement {
   from: string;
   to: string;
   amount: number;
-  fromName: string;
-  toName: string;
+  fromName?: string;
+  toName?: string;
 }
 
-/**
- * Round to 2 decimal places with deterministic tie-breaking
- */
-export function roundToTwoDec(num: number): number {
-  return Math.round(num * 100) / 100;
+export interface RecordedSettlement {
+  fromId: string;
+  toId: string;
+  amount: number;
+  settledAt?: Date;
 }
+
+export interface ExpenseCalculation {
+  totalExpense: number;
+  taxAmount: number;
+  tipAmount: number;
+  shares: SplitDetail;
+}
+
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
 
 /**
  * Calculate tax and tip amounts
@@ -132,8 +166,12 @@ function validateCustomAmounts(
   return { valid: true };
 }
 
+// ============================================================================
+// MAIN CALCULATION FUNCTIONS
+// ============================================================================
+
 /**
- * Main calculation function
+ * Calculate expense split with tax and tip
  */
 export function calculateExpenseSplit(
   grossAmount: number,
@@ -200,25 +238,16 @@ export function calculateExpenseSplit(
 }
 
 /**
- * Calculate per-person ledger
+ * Calculate per-person ledger from expenses
  */
 export function calculateLedger(
-  expenses: Array<{
-    id: string;
-    payerId: string;
-    amount: number;
-    taxPercent?: number;
-    taxAbsolute?: number;
-    tipPercent?: number;
-    tipAbsolute?: number;
-    splitType: string;
-    splitDetails: SplitDetail;
-  }>,
-  participants: Array<{ id: string; name: string }>
+  expenses: ExpenseInput[],
+  participants: Participant[],
+  recordedSettlements: RecordedSettlement[] = []
 ): ParticipantLedger[] {
   const ledger: { [id: string]: ParticipantLedger } = {};
 
-  // Initialize
+  // Initialize ledger for all participants
   for (const p of participants) {
     ledger[p.id] = {
       id: p.id,
@@ -229,11 +258,11 @@ export function calculateLedger(
     };
   }
 
-  // Process expenses
+  // Process each expense
   for (const expense of expenses) {
     const calc = calculateExpenseSplit(
       expense.amount,
-      expense.splitType as any,
+      expense.splitType,
       participants.map((p) => p.id),
       expense.splitDetails,
       expense.taxPercent,
@@ -242,14 +271,14 @@ export function calculateLedger(
       expense.tipAbsolute
     );
 
-    // Update payer
+    // Update payer's totalPaid
     if (ledger[expense.payerId]) {
       ledger[expense.payerId].totalPaid = roundToTwoDec(
         ledger[expense.payerId].totalPaid + calc.totalExpense
       );
     }
 
-    // Update owes
+    // Update each participant's totalOwed
     for (const [pId, share] of Object.entries(calc.shares)) {
       if (ledger[pId]) {
         ledger[pId].totalOwed = roundToTwoDec(ledger[pId].totalOwed + share);
@@ -263,7 +292,21 @@ export function calculateLedger(
     entry.netBalance = roundToTwoDec(entry.totalPaid - entry.totalOwed);
   }
 
-  // Normalize rounding errors
+  // Account for recorded settlements
+  for (const settlement of recordedSettlements) {
+    if (ledger[settlement.fromId] && ledger[settlement.toId]) {
+      // Person who paid reduces their debt (increases netBalance)
+      ledger[settlement.fromId].netBalance = roundToTwoDec(
+        ledger[settlement.fromId].netBalance + settlement.amount
+      );
+      // Person who received increases their credit (decreases netBalance)
+      ledger[settlement.toId].netBalance = roundToTwoDec(
+        ledger[settlement.toId].netBalance - settlement.amount
+      );
+    }
+  }
+
+  // Normalize rounding errors - ensure total net balance is close to 0
   const totalNet = roundToTwoDec(
     ledgerArray.reduce((sum, e) => sum + e.netBalance, 0)
   );
@@ -290,18 +333,23 @@ export function calculateLedger(
 }
 
 /**
- * Generate minimal settlement transactions
+ * Generate minimal settlement transactions to balance the ledger
  */
-export function generateSettlement(ledger: ParticipantLedger[]): Settlement[] {
+export function generateSettlement(
+  ledger: ParticipantLedger[] | { [id: string]: ParticipantLedger }
+): Settlement[] {
   const settlements: Settlement[] = [];
 
+  // Convert to array if object is passed
+  const ledgerArray = Array.isArray(ledger) ? ledger : Object.values(ledger);
+
   // Create lists of debtors and creditors
-  const debtors = ledger
+  const debtors = ledgerArray
     .filter((l) => l.netBalance < -0.01)
     .map((l) => ({ ...l, balance: -l.netBalance }))
     .sort((a, b) => b.balance - a.balance);
 
-  const creditors = ledger
+  const creditors = ledgerArray
     .filter((l) => l.netBalance > 0.01)
     .sort((a, b) => b.netBalance - a.netBalance);
 
@@ -330,4 +378,30 @@ export function generateSettlement(ledger: ParticipantLedger[]): Settlement[] {
   }
 
   return settlements;
+}
+
+/**
+ * Determine if an expense is a trip-wide expense or personal expense
+ */
+export function isTripExpense(
+  splitType: "EQUAL" | "SELECTED_EQUAL" | "CUSTOM_AMOUNTS" | "PERCENTAGES",
+  splitDetails: SplitDetail | undefined,
+  allParticipantIds: string[]
+): boolean {
+  // If splitType is EQUAL, it's a trip expense (splits among all participants)
+  if (splitType === "EQUAL") {
+    return true;
+  }
+
+  // For other split types, check if all participants are included
+  if (
+    splitDetails &&
+    Object.keys(splitDetails).length === allParticipantIds.length
+  ) {
+    // All participants are included, so it's effectively a trip expense
+    return true;
+  }
+
+  // Otherwise, it's a personal expense (only some participants involved)
+  return false;
 }

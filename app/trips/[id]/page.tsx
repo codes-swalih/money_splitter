@@ -7,9 +7,12 @@ import ParticipantList from "@/components/ParticipantList";
 import ExpenseModal from "@/components/ExpenseModal";
 import ExpenseList from "@/components/ExpenseList";
 import SettlementView from "@/components/SettlementView";
-import DashboardStats from "@/components/DashboardStats";
+import TripEditModal from "@/components/TripEditModal";
+import SettlementHistory from "@/components/SettlementHistory";
+import TripStats from "@/components/TripStats";
 import { ParticipantLedger, Settlement } from "@/lib/utils/calculations";
 import { downloadCSV, generateCSVExport } from "@/lib/utils/export";
+import DashboardStats from "@/components/DashboardStats";
 import Link from "next/link";
 
 interface Expense {
@@ -49,10 +52,12 @@ export default function TripPage() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [ledger, setLedger] = useState<ParticipantLedger[]>([]);
   const [settlements, setSettlements] = useState<Settlement[]>([]);
+  const [recordedSettlements, setRecordedSettlements] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
     fetchTripData();
@@ -68,6 +73,7 @@ export default function TripPage() {
         setExpenses(data.expenses);
         setLedger(data.ledger);
         setSettlements(data.settlements);
+        setRecordedSettlements(data.recordedSettlements || []);
       } else {
         alert("Trip not found");
         router.push("/");
@@ -162,6 +168,54 @@ export default function TripPage() {
     alert("Trip link copied to clipboard!");
   };
 
+  const handleEditTrip = () => {
+    setIsEditModalOpen(true);
+  };
+
+  const handleSaveTrip = async (updatedTripData: any) => {
+    try {
+      const res = await fetch(`/api/trips/${tripId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedTripData),
+      });
+
+      if (res.ok) {
+        await fetchTripData();
+      } else {
+        const error = await res.json();
+        throw new Error(error.error || "Failed to update trip");
+      }
+    } catch (error) {
+      console.error("Error updating trip:", error);
+      throw error;
+    }
+  };
+
+  const handleDeleteTrip = async () => {
+    if (
+      !confirm(
+        "Are you sure you want to delete this trip? This action cannot be undone."
+      )
+    )
+      return;
+
+    try {
+      const res = await fetch(`/api/trips/${tripId}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        router.push("/");
+      } else {
+        alert("Failed to delete trip");
+      }
+    } catch (error) {
+      console.error("Error deleting trip:", error);
+      alert("Error deleting trip");
+    }
+  };
+
   const filteredExpenses = expenses.filter((e) =>
     filter === ""
       ? true
@@ -207,6 +261,8 @@ export default function TripPage() {
         currency={trip.currency}
         onExport={handleExport}
         onShare={handleShare}
+        onEdit={handleEditTrip}
+        onDelete={handleDeleteTrip}
       />
 
       <main className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-8">
@@ -214,6 +270,15 @@ export default function TripPage() {
         <div className="mb-6 md:mb-8">
           <DashboardStats trip={trip} expenses={expenses} ledger={ledger} />
         </div>
+
+        {/* Trip Stats */}
+        {/* <div className="mb-6 md:mb-8">
+          <TripStats
+            expenses={expenses}
+            participants={trip.participants}
+            ledger={ledger}
+          />
+        </div> */}
 
         {/* Two Column Layout */}
         <div className="grid lg:grid-cols-3 gap-6 md:gap-8">
@@ -248,7 +313,17 @@ export default function TripPage() {
             />
 
             {/* Settlement */}
-            <SettlementView settlements={settlements} />
+            <SettlementView
+              settlements={settlements}
+              tripId={tripId}
+              onSettleComplete={() => fetchTripData()}
+            />
+
+            {/* Settlement History */}
+            <SettlementHistory
+              settlements={recordedSettlements}
+              participants={trip.participants}
+            />
           </div>
         </div>
       </main>
@@ -264,6 +339,14 @@ export default function TripPage() {
         participants={trip.participants}
         editingExpense={editingExpense}
         currency={trip.currency}
+      />
+
+      {/* Trip Edit Modal */}
+      <TripEditModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        trip={trip}
+        onSave={handleSaveTrip}
       />
     </div>
   );
