@@ -60,16 +60,16 @@ export default function Home() {
           <h1 className="text-2xl md:text-5xl font-bold mb-2">
             Split Expenses with Ease
           </h1>
-          <p className="text-blue-100 text- md:text-xl  max-w-2xl mx-auto">
+          <p className="text-blue-100 text- md:text-xl mb-5 md:mb-0  max-w-2xl mx-auto">
             Track shared expenses, calculate settlements, and keep your group
             trips fair and simple.
           </p>
           {user && (
             <Link
               href="/trips/new"
-              className="inline-flex items-center gap-3 bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all shadow-lg text-lg"
+              className="inline-flex items-center gap-3 bg-white text-blue-600 px-8 py-2 md:py-4 rounded-md md:rounded-xl font-semibold hover:bg-gray-100 transition-all shadow-lg text-lg"
             >
-              <span className="text-2xl">+</span>
+              <span className="md:text-2xl">+</span>
               Create New Trip
             </Link>
           )}
@@ -164,9 +164,9 @@ export default function Home() {
               {user ? (
                 <Link
                   href="/trips/new"
-                  className="inline-flex items-center gap-3 bg-blue-600 text-white px-8 md:py-4 rounded-xl font-semibold hover:bg-blue-700 transition-all shadow-lg text-lg w-full justify-center"
+                  className="inline-flex items-center gap-3 bg-blue-600 text-white px-8 py-2 md:py-4 rounded-md md:rounded-xl font-semibold hover:bg-blue-700 transition-all shadow-lg md:text-lg w-full justify-center"
                 >
-                  <span className="text-2xl">+</span>
+                  <span className="md:text-2xl">+</span>
                   Create New Trip
                 </Link>
               ) : (
@@ -193,7 +193,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-card-lg p-6 md:p-8 border border-gray-200">
+          <div className="bg-white rounded-2xl shadow-card-lg p-4 md:p-8 border border-gray-200">
             <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
               <svg
                 className="w-6 h-6 text-blue-600"
@@ -237,7 +237,7 @@ export default function Home() {
                     />
                   </svg>
                 </div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                <h4 className="md:text-lg font-semibold text-gray-900 mb-2">
                   No trips yet
                 </h4>
                 <p className="text-gray-600 mb-6">
@@ -261,16 +261,16 @@ export default function Home() {
                   <Link
                     key={t._id}
                     href={`/trips/${t._id}`}
-                    className="block p-4 md:p-6 rounded-xl hover:bg-gray-50 border border-gray-100 hover:border-blue-200 transition-all group"
+                    className="block p-3 md:p-6 rounded-xl hover:bg-gray-50 border border-gray-100 hover:border-blue-200 transition-all group"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                          {/* <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
                             <span className="text-blue-600 font-semibold text-sm">
                               {t.title.charAt(0).toUpperCase()}
                             </span>
-                          </div>
+                          </div> */}
                           <div>
                             <div className="font-semibold text-gray-900 text-lg group-hover:text-blue-600 transition-colors">
                               {t.title}
@@ -291,7 +291,7 @@ export default function Home() {
                                   />
                                 </svg>
                                 {new Date(t.startDate).toLocaleDateString()} -{" "}
-                                {new Date(t.endDate).toLocaleDateString()}
+                                {/* {new Date(t.endDate).toLocaleDateString()} */}
                               </span>
                             </div>
                           </div>
@@ -301,9 +301,9 @@ export default function Home() {
                         <div className="text-sm text-gray-500 mb-1">
                           {t.participants?.length || 0} people
                         </div>
-                        <div className="text-sm font-medium text-blue-600">
+                        {/* <div className="text-sm font-medium text-blue-600">
                           {t.currency}
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </Link>

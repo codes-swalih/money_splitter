@@ -267,6 +267,15 @@ export default function TripPage() {
 
       <main className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-8">
         {/* Dashboard Stats */}
+        <button
+          onClick={() => {
+            setEditingExpense(null);
+            setIsModalOpen(true);
+          }}
+          className="w-full mb-5 md:w-auto bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all shadow-md"
+        >
+          + Add Expense
+        </button>
         <div className="mb-6 md:mb-8">
           <DashboardStats trip={trip} expenses={expenses} ledger={ledger} />
         </div>
@@ -290,15 +299,6 @@ export default function TripPage() {
           {/* Right Column - Expenses & Settlement */}
           <div className="lg:col-span-2 space-y-6 md:space-y-8">
             {/* Add Expense Button */}
-            <button
-              onClick={() => {
-                setEditingExpense(null);
-                setIsModalOpen(true);
-              }}
-              className="w-full md:w-auto bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all shadow-md"
-            >
-              + Add Expense
-            </button>
 
             {/* Expense List */}
             <ExpenseList

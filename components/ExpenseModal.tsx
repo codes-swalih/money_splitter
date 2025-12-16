@@ -242,7 +242,7 @@ export default function ExpenseModal({
           </div>
 
           {/* Receipt Upload */}
-          <div>
+          {/* <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Receipt (Optional)
             </label>
@@ -255,10 +255,10 @@ export default function ExpenseModal({
             <p className="text-xs text-gray-500 mt-1">
               Upload a photo or PDF of your receipt (max 5MB)
             </p>
-          </div>
+          </div> */}
 
           {/* Tax & Tip */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Tax (%)
@@ -286,7 +286,7 @@ export default function ExpenseModal({
                 placeholder="0"
               />
             </div>
-          </div>
+          </div> */}
 
           {/* Split Type */}
           <div>
@@ -323,7 +323,7 @@ export default function ExpenseModal({
               ].map(({ value, label, type }) => (
                 <label
                   key={value}
-                  className="flex items-center gap-2 cursor-pointer p-2 rounded hover:bg-gray-50"
+                  className="flex items-center gap-3 cursor-pointer p-2 rounded hover:bg-gray-50"
                 >
                   <input
                     type="radio"
@@ -331,7 +331,7 @@ export default function ExpenseModal({
                     value={value}
                     checked={splitType === value}
                     onChange={(e) => setSplitType(e.target.value)}
-                    className="w-4 h-4"
+                    className="w-4 h-4 text-blue-600 focus:ring-2 focus:ring-blue-500"
                   />
                   <span className="text-sm text-gray-700 flex-1">{label}</span>
                   <span
@@ -362,7 +362,7 @@ export default function ExpenseModal({
               </label>
               <div className="space-y-2">
                 {participants.map((p) => (
-                  <div key={p.id} className="flex items-center gap-2">
+                  <div key={p.id} className="flex items-center gap-3">
                     {splitType === "SELECTED_EQUAL" ? (
                       <>
                         <input
@@ -377,7 +377,7 @@ export default function ExpenseModal({
                               );
                             }
                           }}
-                          className="w-4 h-4"
+                          className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
                         />
                         <label className="text-sm text-gray-700">
                           {p.name}

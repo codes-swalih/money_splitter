@@ -107,7 +107,7 @@ export default function DashboardStats({
           {trip.currency} {highestSpender?.totalPaid.toFixed(2) || "0.00"}
         </div>
         <div className="text-xs md:text-sm text-gray-600 mt-1">
-          Total spent on trip expenses
+          Total spent on per personal and trip expenses
         </div>
       </div>
     </div>

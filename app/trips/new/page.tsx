@@ -3,13 +3,15 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { id } from "date-fns/locale";
 
 const DEFAULT_PARTICIPANTS = [
-  { id: "1", name: "swalih" },
-  { id: "2", name: "ijas" },
-  { id: "3", name: "ameen" },
-  { id: "4", name: "ameer" },
-  { id: "5", name: "arshad ali" },
+  // { id: "1", name: "swalih" },
+  // { id: "2", name: "ijas" },
+  // { id: "3", name: "ameen" },
+  // { id: "4", name: "ameer" },
+  // { id: "5", name: "arshad ali" },
+  {id: "1", name: "John" },
 ];
 
 export default function NewTripPage() {
